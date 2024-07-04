@@ -7,6 +7,7 @@ import torchaudio
 import pybase16384 as b14
 import numpy as np
 import lzma
+from pydub import AudioSegment
 
 
 if sys.platform == "darwin":
@@ -33,6 +34,15 @@ def save_mp3_file(wav, name: str):
     with open(mp3_filename, "wb") as f:
         f.write(data)
     logger.info(f"mp3音频文件已保存：{mp3_filename}")
+
+# wav格式 转 mp3
+def wav_to_mp3(wav_path, mp3_path):
+    # 加载 WAV 文件
+    audio = AudioSegment.from_wav(wav_path)
+    # 将 WAV 文件导出为 MP3 格式
+    audio.export(mp3_path, format="mp3")
+    print(f"转换成功：{wav_path} -> {mp3_path}")
+
 
 
 def main(texts: list[str], output_name: str, seed_num: int):
@@ -110,7 +120,7 @@ if __name__ == "__main__":
     # 音色下载：https://huggingface.co/spaces/taa/ChatTTS_Speaker
     # 男声：402、1019、1128、729、
     # 女声：1983、1910、1363、1518、181、1528、1397、2310、1519、1089、1096
-    seed_num = 1089
+    seed_num = 1096
 
     texts = ["那大家总要有个精神寄托，以前是生娃 然后游戏机 电脑 手机 ，小孩有小孩的 大人还应该有大人，[laugh] 可以，要不生产AI故事 挂到知乎 这些地方 看看有没有人读，这样吗，[laugh]，你要不要找个好听的声音，[laugh]，我的不好听，还不如你的"]
     main(texts, str(seed_num), seed_num)
